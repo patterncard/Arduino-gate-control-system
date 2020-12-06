@@ -4,24 +4,27 @@ int pinLED12 = 12;
 int pinLED11 = 11;
 int pinLED10 = 10;
 int pinLED9 = 9;
-int pinSwitchOpenClose = 2;
+int pinSwitch = 2;
  
 // variables to hold the new and old switch states
-boolean oldSwitchOpenCloseState = LOW;
-boolean newSwitchOpenCloseState = LOW;
+boolean oldSwitchState = LOW;
+boolean newSwitchState = LOW;
  
-boolean stateLED13 = LOW;
-boolean stateLED12 = LOW;
-boolean stateLED11 = LOW;
-boolean stateLED10 = LOW;
-boolean stateLED9 = LOW;
+boolean LEDstate = LOW;
 
 int animationSpeed = 0;
 
 void setup() 
 {
     Serial.begin(9600);
- 
+
+    // light beam interruption
+    // pressing the pushbutton simulate interrupting the light beam and opening the gate  
+    pinMode(pinSwitch, INPUT);
+    
+    // gate   
+    // glowing diodes simulate closing gate  
+    // fadeing diodes simulate opening gate 
     pinMode(pinLED13, OUTPUT);  
     pinMode(pinLED12, OUTPUT);  
     pinMode(pinLED11, OUTPUT);
@@ -32,92 +35,80 @@ void setup()
     digitalWrite(pinLED12,LOW); 
     digitalWrite(pinLED11,LOW); 
     digitalWrite(pinLED10,LOW); 
-    digitalWrite(pinLED9,LOW); 
-
-    // opening and closing the gate
-    pinMode(pinSwitchOpenClose, INPUT); 
+    digitalWrite(pinLED9,LOW);  
 }
  
 void loop()
 {
   animationSpeed = 400;
-  
-    newSwitchOpenCloseState = digitalRead(pinSwitchOpenClose);
+
+    // read the state of the pushbutton value:
+    newSwitchState = digitalRead(pinSwitch);
  
-    if ( newSwitchOpenCloseState != oldSwitchOpenCloseState ) 
+    if ( newSwitchState != oldSwitchState ) 
     {
-       // checking if has the button switch been closed?
-       if ( newSwitchOpenCloseState == HIGH )
+       // check if the pushbutton is pressed
+       if ( newSwitchState == HIGH )
        {
-           if ( stateLED13 == LOW ) 
+           if ( LEDstate == LOW ) 
            { 
-            digitalWrite(pinLED13, HIGH);
-            stateLED13 = HIGH; 
+            // closing the gate 
+            digitalWrite(pinLED13, HIGH); 
             delay(animationSpeed);
           
             digitalWrite(pinLED12, HIGH);
-            stateLED12 = HIGH;
             delay(animationSpeed);
           
             digitalWrite(pinLED11, HIGH);
-            stateLED11 = HIGH;
             delay(animationSpeed);
           
             digitalWrite(pinLED10, HIGH);
-            stateLED10 = HIGH;
             delay(animationSpeed);
           
             digitalWrite(pinLED9, HIGH);
-            stateLED9 = HIGH;
+            LEDstate = HIGH;
            }
            else                    
-           {            
+           {      
+            // opening the gate      
             digitalWrite(pinLED9, LOW);   
-            stateLED9 = LOW;
             delay(animationSpeed);
             
             digitalWrite(pinLED10, LOW);   
-            stateLED10 = LOW;
             delay(animationSpeed);
             
             digitalWrite(pinLED11, LOW);   
-            stateLED11 = LOW;
             delay(animationSpeed);
 
             digitalWrite(pinLED12, LOW);
-            stateLED12 = LOW;
             delay(animationSpeed);
             
-            digitalWrite(pinLED13, LOW);   
-            stateLED13 = LOW;
-            delay(animationSpeed);
+            digitalWrite(pinLED13, LOW);  
+            delay(animationSpeed); 
+            LEDstate = LOW;
 
             // automatically closing the gate after strictly defined time
             delay(3 * animationSpeed);
             
-            if ( stateLED13 == LOW ) 
-           { 
-            digitalWrite(pinLED13, HIGH);
-            stateLED13 = HIGH; 
-            delay(animationSpeed);
+             if ( LEDstate == LOW ) 
+                { 
+                digitalWrite(pinLED13, HIGH);
+                delay(animationSpeed);
           
-            digitalWrite(pinLED12, HIGH);
-            stateLED12 = HIGH;
-            delay(animationSpeed);
+                digitalWrite(pinLED12, HIGH);
+                delay(animationSpeed);
           
-            digitalWrite(pinLED11, HIGH);
-            stateLED11 = HIGH;
-            delay(animationSpeed);
+                digitalWrite(pinLED11, HIGH);
+                delay(animationSpeed);
           
-            digitalWrite(pinLED10, HIGH);
-            stateLED10 = HIGH;
-            delay(animationSpeed);
+                digitalWrite(pinLED10, HIGH);
+                delay(animationSpeed);
           
-            digitalWrite(pinLED9, HIGH);
-            stateLED9 = HIGH;
-           }
+                digitalWrite(pinLED9, HIGH);
+                LEDstate = HIGH;
+                }
            }
        }
-       oldSwitchOpenCloseState = newSwitchOpenCloseState;
+       oldSwitchState = newSwitchState;
     }   
 }
