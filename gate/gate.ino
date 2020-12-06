@@ -1,3 +1,4 @@
+// Defining the pins being used
 int pinLED13 = 13;
 int pinLED12 = 12;
 int pinLED11 = 11;
@@ -15,12 +16,11 @@ boolean stateLED11 = LOW;
 boolean stateLED10 = LOW;
 boolean stateLED9 = LOW;
 
+int animationSpeed = 0;
+
 void setup() 
 {
     Serial.begin(9600);
-    Serial.print("Sketch:   ");   Serial.println(__FILE__);
-    Serial.print("Uploaded: ");   Serial.println(__DATE__);
-    Serial.println(" ");
  
     pinMode(pinLED13, OUTPUT);  
     pinMode(pinLED12, OUTPUT);  
@@ -33,29 +33,90 @@ void setup()
     digitalWrite(pinLED11,LOW); 
     digitalWrite(pinLED10,LOW); 
     digitalWrite(pinLED9,LOW); 
- 
+
+    // opening and closing the gate
     pinMode(pinSwitchOpenClose, INPUT); 
 }
  
 void loop()
 {
+  animationSpeed = 400;
+  
     newSwitchOpenCloseState = digitalRead(pinSwitchOpenClose);
  
     if ( newSwitchOpenCloseState != oldSwitchOpenCloseState ) 
     {
-       // has the button switch been closed?
+       // checking if has the button switch been closed?
        if ( newSwitchOpenCloseState == HIGH )
        {
-           if ( stateLED13 == LOW ) { digitalWrite(pinLED13, HIGH);  stateLED13 = HIGH; }
-           else                    { digitalWrite(pinLED13, LOW);   stateLED13 = LOW;  }
-           if ( stateLED12 == LOW ) { digitalWrite(pinLED12, HIGH);  stateLED12 = HIGH; }
-           else                    { digitalWrite(pinLED12, LOW);   stateLED12 = LOW;  }
-           if ( stateLED11 == LOW ) { digitalWrite(pinLED11, HIGH);  stateLED11 = HIGH; }
-           else                    { digitalWrite(pinLED11, LOW);   stateLED11 = LOW;  }
-           if ( stateLED10 == LOW ) { digitalWrite(pinLED10, HIGH);  stateLED10 = HIGH; }
-           else                    { digitalWrite(pinLED10, LOW);   stateLED10 = LOW;  }
-           if ( stateLED9 == LOW ) { digitalWrite(pinLED9, HIGH);  stateLED9 = HIGH; }
-           else                    { digitalWrite(pinLED9, LOW);   stateLED9 = LOW;  }
+           if ( stateLED13 == LOW ) 
+           { 
+            digitalWrite(pinLED13, HIGH);
+            stateLED13 = HIGH; 
+            delay(animationSpeed);
+          
+            digitalWrite(pinLED12, HIGH);
+            stateLED12 = HIGH;
+            delay(animationSpeed);
+          
+            digitalWrite(pinLED11, HIGH);
+            stateLED11 = HIGH;
+            delay(animationSpeed);
+          
+            digitalWrite(pinLED10, HIGH);
+            stateLED10 = HIGH;
+            delay(animationSpeed);
+          
+            digitalWrite(pinLED9, HIGH);
+            stateLED9 = HIGH;
+           }
+           else                    
+           {            
+            digitalWrite(pinLED9, LOW);   
+            stateLED9 = LOW;
+            delay(animationSpeed);
+            
+            digitalWrite(pinLED10, LOW);   
+            stateLED10 = LOW;
+            delay(animationSpeed);
+            
+            digitalWrite(pinLED11, LOW);   
+            stateLED11 = LOW;
+            delay(animationSpeed);
+
+            digitalWrite(pinLED12, LOW);
+            stateLED12 = LOW;
+            delay(animationSpeed);
+            
+            digitalWrite(pinLED13, LOW);   
+            stateLED13 = LOW;
+            delay(animationSpeed);
+
+            // automatically closing the gate after strictly defined time
+            delay(3 * animationSpeed);
+            
+            if ( stateLED13 == LOW ) 
+           { 
+            digitalWrite(pinLED13, HIGH);
+            stateLED13 = HIGH; 
+            delay(animationSpeed);
+          
+            digitalWrite(pinLED12, HIGH);
+            stateLED12 = HIGH;
+            delay(animationSpeed);
+          
+            digitalWrite(pinLED11, HIGH);
+            stateLED11 = HIGH;
+            delay(animationSpeed);
+          
+            digitalWrite(pinLED10, HIGH);
+            stateLED10 = HIGH;
+            delay(animationSpeed);
+          
+            digitalWrite(pinLED9, HIGH);
+            stateLED9 = HIGH;
+           }
+           }
        }
        oldSwitchOpenCloseState = newSwitchOpenCloseState;
     }   
