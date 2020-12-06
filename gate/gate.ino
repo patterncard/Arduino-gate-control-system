@@ -10,6 +10,7 @@ int animationSpeed = 0;
 int buttonOpenCloseState = 0;
 int buttonInterruptState = 0;
 
+
 void setup() {
   pinMode(ledPin13, OUTPUT);
   pinMode(ledPin12, OUTPUT);

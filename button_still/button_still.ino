@@ -5,7 +5,6 @@
 //  Pins
 //  D10 to resister and LED
 //  D2 to push button switch
-//  
  
 // Define the pins being used
 int pin_LED = 10;
